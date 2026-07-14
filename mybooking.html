@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings · Cinema Elite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #080910;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width:5px; }
+        ::-webkit-scrollbar-track { background:#080910; }
+        ::-webkit-scrollbar-thumb { background:#c9a86a; border-radius:10px; }
+
+        :root {
+            --cinema-gold: #c9a86a;
+            --card-bg: rgba(20,22,30,0.92);
+            --border: rgba(255,255,255,0.08);
+            --text-secondary: #a0a0b0;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(8,9,16,0.96);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--cinema-gold);
+            text-decoration: none;
+        }
+        .logo span { color: #fff; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background: rgba(255,255,255,0.03);
+        }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+        }
+        .admin-badge-header {
+            background: rgba(201,168,106,0.15);
+            color: var(--cinema-gold);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 50px;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        .page-header h1 span { color: var(--cinema-gold); }
+        .page-header .stats-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .page-header .stats-badge i { color: var(--cinema-gold); margin-right: 8px; }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .booking-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .booking-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(201,168,106,0.4);
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
+        }
+        .booking-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--cinema-gold);
+            border-radius: 0 4px 4px 0;
+        }
+        .booking-movie {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .booking-movie h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--cinema-gold);
+        }
+        .status-badge {
+            background: rgba(76,175,80,0.15);
+            color: #66bb6a;
+            padding: 4px 14px;
+            border-radius: 60px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border: 1px solid rgba(76,175,80,0.2);
+            white-space: nowrap;
+        }
+        .booking-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .booking-detail i {
+            width: 20px;
+            color: var(--cinema-gold);
+            text-align: center;
+        }
+        .booking-detail strong {
+            color: #fff;
+            font-weight: 500;
+        }
+        .booking-footer {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .booking-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--cinema-gold);
+        }
+        .booking-id {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--card-bg);
+            border-radius: 28px;
+            border: 1px dashed var(--border);
+        }
+        .empty-state i {
+            font-size: 3.5rem;
+            color: var(--cinema-gold);
+            opacity: 0.4;
+            margin-bottom: 1rem;
+        }
+        .empty-state p { color: var(--text-secondary); margin-bottom: 1rem; }
+        .empty-state a {
+            color: var(--cinema-gold);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid var(--cinema-gold);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f212b;
+            border-left: 4px solid var(--cinema-gold);
+            padding: 14px 20px;
+            border-radius: 16px;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 4000;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        footer {
+            margin-top: 80px;
+            padding: 35px 7%;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #888;
+        }
+
+        @media (max-width: 700px) {
+            .booking-grid { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; align-items: stretch; text-align: center; }
+            .navbar { flex-direction: column; gap: 12px; }
+            .nav-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="#" class="logo" onclick="navigateTo('Home')">CINEMA<span>ELITE</span></a>
+    <div class="nav-links">
+        <a href="Home.html" onclick="navigateTo('Home')">Home</a>
+        <a href="Movie.html" onclick="navigateTo('Movie')">Movies</a>
+        <a href="mybooking.html" class="active">My Bookings</a>
+        <div id="navAuthArea">
+            <div class="user-badge"><i class="fas fa-user-circle"></i> <span id="userNameDisplay">Cinephile</span></div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>My <span>Bookings</span></h1>
+        <div class="stats-badge">
+            <i class="fas fa-ticket-alt"></i> <span id="bookingCount">0</span> tickets booked
+        </div>
+    </div>
+
+    <div class="booking-grid" id="bookingGrid">
+        <div class="empty-state">
+            <i class="fas fa-spinner fa-pulse"></i>
+            <p>Loading your bookings...</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="logo" style="font-size:1.3rem;">CINEMA<span>ELITE</span></div>
+    <span>© 2026 — Your cinematic journey</span>
+    <div><i class="fab fa-instagram"></i> <i class="fab fa-twitter"></i> <i class="fab fa-facebook"></i></div>
+</footer>
+
+<div id="globalToast" class="toast"><i class="fas fa-film" style="color:#c9a86a;"></i><span id="toastMsg"></span></div>
+
+<script>
+    // ---------- NAVIGATION ----------
+    function navigateTo(page) {
+        if (page === 'Home') window.location.href = '/';
+        else if (page === 'Movie') window.location.href = '/movie';
+        else window.location.href = '/' + page;
+    }
+
+    // ---------- TOAST ----------
+    function showToast(msg, isError = false) {
+        const t = document.getElementById('globalToast');
+        document.getElementById('toastMsg').innerText = msg;
+        t.style.borderLeftColor = isError ? '#e11e28' : '#c9a86a';
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ---------- LOAD USER ----------
+    function loadUser() {
+        const raw = localStorage.getItem('cinemaUser');
+        if (raw) {
+            try {
+                const user = JSON.parse(raw);
+                document.getElementById('userNameDisplay').innerText = user.name || 'Cinephile';
+                return user;
+            } catch(e) {}
+        }
+        // fallback
+        document.getElementById('userNameDisplay').innerText = 'Guest';
+        return null;
+    }
+
+    // ---------- LOAD BOOKINGS ----------
+    function loadBookings() {
+        const grid = document.getElementById('bookingGrid');
+        const raw = localStorage.getItem('myBookings');
+        
+        if (!raw) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-ticket-alt"></i>
+                    <p>You haven't booked any tickets yet</p>
+                    <a href="/movie">Browse Movies <i class="fas fa-arrow-right"></i></a>
+                </div>
+            `;
+            document.getElementById('bookingCount').innerText = '0';
+            return;
+        }
+
+        try {
+            const bookings = JSON.parse(raw);
+            if (!Array.isArray(bookings) || bookings.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-ticket-alt"></i>
+                        <p>No bookings found</p>
+                        <a href="/movie">Browse Movies <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                document.getElementById('bookingCount').innerText = '0';
+                return;
+            }
+
+            // Sort by booking date (newest first)
+            bookings.sort((a, b) => new Date(b.bookingDate || b.date) - new Date(a.bookingDate || a.date));
+
+            document.getElementById('bookingCount').innerText = bookings.length;
+
+            grid.innerHTML = bookings.map((b, idx) => {
+                const seats = Array.isArray(b.seats) ? b.seats.join(', ') : (b.seats || 'A1');
+                const total = parseFloat(b.total || 0).toFixed(2);
+                const date = b.date || '2026-01-01';
+                const time = b.time || '7:30 PM';
+                const theater = b.theater || 'IMAX Hall';
+                const status = b.status || 'Confirmed';
+                const movie = b.movie || b.movieTitle || 'Movie';
+                const bid = b.bookingId || b.id || `BK${String(idx+1).padStart(3,'0')}`;
+
+                return `
+                    <div class="booking-card">
+                        <div class="booking-movie">
+                            <h3><i class="fas fa-film" style="margin-right:8px;font-size:0.9rem;"></i>${movie}</h3>
+                            <span class="status-badge"><i class="fas fa-check-circle"></i> ${status}</span>
+                        </div>
+                        <div class="booking-detail"><i class="fas fa-hashtag"></i> Booking ID: <strong>${bid}</strong></div>
+                        <div class="booking-detail"><i class="fas fa-calendar-alt"></i> Date: <strong>${date}</strong> at <strong>${time}</strong></div>
+                        <div class="booking-detail"><i class="fas fa-chair"></i> Seats: <strong>${seats}</strong></div>
+                        <div class="booking-detail"><i class="fas fa-theater-masks"></i> Theater: <strong>${theater}</strong></div>
+                        <div class="booking-footer">
+                            <span class="booking-id"><i class="fas fa-clock"></i> ${new Date(b.bookingDate || Date.now()).toLocaleDateString()}</span>
+                            <span class="booking-price">$${total}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+        } catch(e) {
+            console.error('Error loading bookings:', e);
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Error loading bookings. Please try again.</p>
+                    <a href="/movie">Browse Movies</a>
+                </div>
+            `;
+            document.getElementById('bookingCount').innerText = '0';
+        }
+    }
+
+    // ---------- INIT ----------
+    loadUser();
+    loadBookings();
+
+    // Auto-refresh every 10 seconds (in case of updates from other tabs)
+    setInterval(loadBookings, 10000);
+
+    // ---------- KEYBOARD SHORTCUT: ESC to close toast ----------
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.getElementById('globalToast').classList.remove('show');
+        }
+    });
+
+    console.log('📽️ My Bookings page loaded — enjoy your cinema experience!');
+</script>
+</body>
+</html>

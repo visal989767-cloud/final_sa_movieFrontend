@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CNIMA · Professional Settings Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0e17;
+            color: #F1F5F9;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ========= MODERN SIDEBAR ========= */
+        .sidebar {
+            width: 280px;
+            background: rgba(10, 14, 23, 0.96);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            z-index: 20;
+        }
+
+        .logo-area {
+            padding: 28px 24px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            margin-bottom: 28px;
+        }
+
+        .logo-area h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0 16px;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-weight: 500;
+            font-size: 15px;
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-links li a i {
+            width: 24px;
+            font-size: 1.25rem;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(255, 215, 0, 0.08);
+            color: #ffd700;
+        }
+
+        .nav-links li a.active {
+            background: linear-gradient(95deg, rgba(255, 215, 0, 0.12), rgba(255, 180, 71, 0.05));
+            color: #ffd700;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            border-left: 3px solid #ffd700;
+        }
+
+        .sidebar-footer {
+            padding: 24px 24px 32px;
+            font-size: 12px;
+            color: #4B5563;
+            text-align: center;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        /* ========= MAIN PANEL ========= */
+        .main-content {
+            flex: 1;
+            background: radial-gradient(circle at 10% 20%, rgba(20, 30, 48, 0.5), #0a0e17);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TOP NAVIGATION BAR - Same as home.html */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #ffd700;
+        }
+
+        .logo h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-links-top {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links-top a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            padding: 8px 0;
+        }
+
+        .nav-links-top a:hover, .nav-links-top a.active {
+            color: #ffd700;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1e2a3a;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .user-area:hover {
+            background: #2a3a4a;
+        }
+
+        .user-area i {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+
+        .user-area img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* scrollable dashboard */
+        .dashboard {
+            padding: 32px 36px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Welcome mini banner */
+        .welcome-card {
+            background: linear-gradient(105deg, #111827 0%, #1E293B 100%);
+            border-radius: 28px;
+            padding: 20px 32px;
+            margin-bottom: 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-text h3 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .welcome-text p {
+            color: #94A3B8;
+            max-width: 550px;
+            margin-top: 6px;
+        }
+
+        .welcome-icon i {
+            font-size: 3.8rem;
+            opacity: 0.3;
+            color: #ffd700;
+        }
+
+        /* Settings grid */
+        .settings-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .setting-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.2s;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 24px 32px 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .panel-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            background: linear-gradient(135deg, #ffd700, #ffaa33);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .panel-body {
+            padding: 24px 32px 32px;
+        }
+
+        /* form styles */
+        .form-2col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-field label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #CBD5E1;
+            letter-spacing: 0.3px;
+        }
+
+        .input-field input {
+            background: #0F172A;
+            border: 1px solid #2D3A5E;
+            padding: 14px 18px;
+            border-radius: 20px;
+            color: #F1F5F9;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .input-field input:focus {
+            border-color: #ffd700;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+
+        /* notification items */
+        .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .notif-row {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .notif-row:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .notif-info span {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .notif-info small {
+            color: #94A3B8;
+            font-size: 0.75rem;
+        }
+
+        /* toggle */
+        .toggle {
+            width: 52px;
+            height: 28px;
+            background: #2D3A5E;
+            border-radius: 40px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .toggle.active {
+            background: #ffd700;
+        }
+        .toggle .knob {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 22px;
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            transition: 0.2s;
+        }
+        .toggle.active .knob {
+            left: 26px;
+        }
+
+        /* preference chips */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .chip {
+            background: rgba(45, 58, 94, 0.7);
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .chip i {
+            font-size: 0.8rem;
+            color: #94A3B8;
+        }
+        .chip.active {
+            background: linear-gradient(125deg, #ffd700, #ffaa33);
+            color: #0a0e17;
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 6px 12px -6px rgba(255, 215, 0, 0.4);
+        }
+        .chip.active i {
+            color: #0a0e17;
+        }
+
+        /* app settings grid */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .app-card {
+            background: #0F172A;
+            border-radius: 24px;
+            padding: 18px;
+            transition: 0.2s;
+        }
+        .app-card h4 {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .app-card p {
+            font-size: 0.7rem;
+            color: #7E8A98;
+            margin-bottom: 14px;
+        }
+        .app-select {
+            width: 100%;
+            background: #1E293B;
+            border: 1px solid #334155;
+            padding: 10px 14px;
+            border-radius: 40px;
+            color: white;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Danger zone */
+        .danger-zone {
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.02);
+        }
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .action-row:last-child {
+            border-bottom: none;
+        }
+        .btn-danger-outline {
+            background: transparent;
+            border: 1px solid #ff4444;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #ff4444;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .btn-danger-outline:hover {
+            background: #ff4444;
+            color: white;
+        }
+        .btn-primary-gold {
+            background: linear-gradient(95deg, #ffd700, #ffaa33);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #0a0e17;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Mobile menu button */
+        .menu-toggle-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #ffd700;
+            border-radius: 40px;
+            padding: 12px;
+            z-index: 40;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                transition: 0.3s;
+                z-index: 30;
+            }
+            .sidebar.mobile-open {
+                left: 0;
+            }
+            .menu-toggle-btn {
+                display: flex;
+            }
+            .top-navbar {
+                padding-left: 80px;
+            }
+        }
+        @media (max-width: 680px) {
+            .dashboard {
+                padding: 20px;
+            }
+            .form-2col {
+                grid-template-columns: 1fr;
+            }
+            .panel-body {
+                padding: 20px;
+            }
+            .nav-links-top {
+                display: none;
+            }
+        }
+
+        /* micro animations */
+        .fade-up {
+            animation: fadeUp 0.4s ease-out;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ffd700;
+            color: #0a0e17;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="menu-toggle-btn" id="mobileMenuToggle">
+    <i class="fas fa-bars" style="color: #0a0e17; font-size: 1.4rem;"></i>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="logo-area">
+        <h1>CNIMA</h1>
+    </div>
+    <ul class="nav-links">
+        <li><a href="/home"><i class="fas fa-home"></i><span>Home</span></a></li>
+        <li><a href="/trending"><i class="fas fa-chart-line"></i><span>Trending</span></a></li>
+        <li><a href="/movie"><i class="fas fa-film"></i><span>Movies</span></a></li>
+        <li><a href="/profile"><i class="fas fa-user"></i><span>My Profile</span></a></li>
+        <li><a href="/setting" class="active"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p>CNIMA © 2025 — Cinema redefined</p>
+    </div>
+</aside>
+
+<div class="main-content">
+    <!-- TOP NAVIGATION BAR - Same as home.html -->
+    <nav class="top-navbar">
+        <div class="logo">
+            <i class="fas fa-film"></i>
+            <h2>CINEMA PREMIERE</h2>
+        </div>
+        <div class="nav-links-top">
+            <a href="/home">Home</a>
+            <a href="/movie">Movies</a>
+            <a href="/profile">Profile</a>
+            <a href="/setting" class="active">Settings</a>
+        </div>
+        <div class="user-area" id="userArea">
+            <i class="fas fa-user-circle"></i>
+            <span id="username">Visal</span>
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="welcome-card">
+            <div class="welcome-text">
+                <h3>⚙️ Account Centre</h3>
+                <p>Fine-tune your experience, privacy and notifications — all in one polished space.</p>
+            </div>
+            <div class="welcome-icon">
+                <i class="fas fa-sliders-h"></i>
+            </div>
+        </div>
+
+        <div class="settings-grid">
+            <!-- Account Panel -->
+            <div class="setting-panel fade-up">
+                <div class="panel-header">
+                    <h3><i class="fas fa-user-edit"></i> Personal details</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-2col">
+                        <div class="input-field">
+                            <label>Full name</label>
+                            <input type="text" id="fullName" value="Um Visal">
+                        </div>
+                        <div class="input-field">
+                            <label>Email address</label>
+                            <input type="email" id="emailAddr" value="visal.um@cnima.com">
+                        </div>
+                        <div class="input-field">
+                            <label>Phone number</label>
+                            <input type="tel" id="phoneNum" value="+855 12 345 678">
+                        </div>
+                        <div class="input-field">
+                            <label>Date of birth</label>
+                            <input type="date" id="dob" value="1992-08-22">
+                        </div>
+                    </div>
+                    <button class="btn-primary-gold" id="saveAccountBtn"><i class="fas fa-check-circle"></i> Save updates</button>
+                </div>
+            </div>
+
+            <!-- Notification panel -->
+            <div class="setting-panel fade-up">
+                <div class="panel-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="notif-list">
+                        <div class="notif-row" data-notif="emailNotif">
+                            <div class="notif-info"><span>📧 Email notifications</span><small>Booking confirmations & recommendations</small></div>
+                            <div class="toggle active" data-toggle="emailNotif"><span class="knob"></span></div>
+                        </div>
+                        <div class="notif-row" data-notif="smsNotif">
+                            <div class="notif-info"><span>📱 SMS alerts</span><small>Real-time booking updates</small></div>
+                            <div class="toggle active" data-toggle="smsNotif"><span class="knob"></span></div>
+                        </div>
+                        <div class="notif-row" data-notif="pushNotif">
+                            <div class="notif-info"><span>🔔 Push notifications</span><small>New movies & exclusive offers</small></div>
+                            <div class="toggle" data-toggle="pushNotif"><span class="knob"></span></div>
+                        </div>
+                        <div class="notif-row" data-notif="promoNotif">
+                            <div class="notif-info"><span>🎁 Promo & newsletters</span><small>Special discounts and events</small></div>
+                            <div class="toggle active" data-toggle="promoNotif"><span class="knob"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorite genres -->
+            <div class="setting-panel fade-up">
+                <div class="panel-header">
+                    <h3><i class="fas fa-tags"></i> Favorite genres</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="chips-container" id="genreChips">
+                        <span class="chip active" data-genre="Action"><i class="fas fa-check-circle"></i> Action</span>
+                        <span class="chip active" data-genre="Sci-Fi"><i class="fas fa-check-circle"></i> Sci-Fi</span>
+                        <span class="chip" data-genre="Drama"><i class="fas fa-check-circle"></i> Drama</span>
+                        <span class="chip active" data-genre="Thriller"><i class="fas fa-check-circle"></i> Thriller</span>
+                        <span class="chip" data-genre="Comedy"><i class="fas fa-check-circle"></i> Comedy</span>
+                        <span class="chip" data-genre="Horror"><i class="fas fa-check-circle"></i> Horror</span>
+                        <span class="chip active" data-genre="Adventure"><i class="fas fa-check-circle"></i> Adventure</span>
+                        <span class="chip" data-genre="Romance"><i class="fas fa-check-circle"></i> Romance</span>
+                        <span class="chip" data-genre="Fantasy"><i class="fas fa-check-circle"></i> Fantasy</span>
+                        <span class="chip active" data-genre="Mystery"><i class="fas fa-check-circle"></i> Mystery</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- App config -->
+            <div class="setting-panel fade-up">
+                <div class="panel-header">
+                    <h3><i class="fas fa-globe"></i> App configuration</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="app-grid">
+                        <div class="app-card"><h4>Language</h4><p>Interface language</p><select class="app-select" id="langSelect"><option>English</option><option>Spanish</option><option>French</option><option>Japanese</option></select></div>
+                        <div class="app-card"><h4>Theme</h4><p>Visual appearance</p><select class="app-select" id="themeSelect"><option selected>Dark (Cinema)</option><option>Light</option><option>Auto</option></select></div>
+                        <div class="app-card"><h4>Video quality</h4><p>Trailers & previews</p><select class="app-select" id="qualitySelect"><option>Auto</option><option selected>High (HD)</option><option>Medium</option></select></div>
+                        <div class="app-card"><h4>Content filter</h4><p>Maturity level</p><select class="app-select" id="contentSelect"><option selected>Allow all</option><option>PG-13 & below</option><option>PG & below</option></select></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="setting-panel danger-zone fade-up">
+                <div class="panel-header">
+                    <h3><i class="fas fa-shield-alt"></i> Data & security</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="action-row">
+                        <div><strong>🗑️ Delete account</strong><div style="font-size: 12px; color:#94A3B8;">Permanently erase all data</div></div>
+                        <button class="btn-danger-outline" id="deleteAccountBtn"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                    <div class="action-row">
+                        <div><strong>🧹 Clear history & preferences</strong><div style="font-size: 12px; color:#94A3B8;">Reset all settings & watch history</div></div>
+                        <button class="btn-danger-outline" id="clearDataBtn"><i class="fas fa-broom"></i> Clear data</button>
+                    </div>
+                    <div class="action-row">
+                        <div><strong>📁 Export personal data</strong><div style="font-size: 12px; color:#94A3B8;">Download a JSON copy</div></div>
+                        <button class="btn-primary-gold" id="exportDataBtn"><i class="fas fa-download"></i> Export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showToast(message, isError = false) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
+        toast.style.background = isError ? '#e74c3c' : '#ffd700';
+        toast.style.color = isError ? 'white' : '#0a0e17';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Mobile toggling
+    const sidebar = document.getElementById('sidebar');
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    if(mobileToggle) {
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('mobile-open');
+        });
+        document.addEventListener('click', function(e) {
+            if(sidebar.classList.contains('mobile-open') && !sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
+                sidebar.classList.remove('mobile-open');
+            }
+        });
+    }
+
+    // Toggle logic
+    const toggles = document.querySelectorAll('.toggle');
+    function updateToggleUI(toggleEl, isActive) {
+        if(isActive) toggleEl.classList.add('active');
+        else toggleEl.classList.remove('active');
+    }
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isNowActive = !toggle.classList.contains('active');
+            updateToggleUI(toggle, isNowActive);
+            const notifKey = toggle.getAttribute('data-toggle');
+            showToast(`${notifKey} ${isNowActive ? 'enabled' : 'disabled'}`);
+        });
+    });
+
+    // Genre chips selection
+    const chips = document.querySelectorAll('.chip');
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chip.classList.toggle('active');
+        });
+    });
+
+    // Save account
+    const saveBtn = document.getElementById('saveAccountBtn');
+    if(saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('emailAddr').value;
+            showToast(`Profile updated: ${name}`);
+        });
+    }
+
+    // Danger zone handlers
+    const delAccBtn = document.getElementById('deleteAccountBtn');
+    const clearBtn = document.getElementById('clearDataBtn');
+    const exportBtn = document.getElementById('exportDataBtn');
+    if(delAccBtn) {
+        delAccBtn.addEventListener('click', () => {
+            if(confirm("⚠️ PERMANENT ACTION: Delete your account? This cannot be undone.")) {
+                showToast("Account deletion request submitted");
+            }
+        });
+    }
+    if(clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if(confirm("Clear all preferences & history?")) {
+                showToast("Preferences cleared");
+            }
+        });
+    }
+    if(exportBtn) {
+        exportBtn.addEventListener('click', () => {
+            showToast("Your data export is being prepared");
+        });
+    }
+
+    // User area click
+    document.getElementById('userArea')?.addEventListener('click', () => {
+        window.location.href = '/profile';
+    });
+</script>
+</body>
+</html>

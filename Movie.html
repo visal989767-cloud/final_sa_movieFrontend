@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>CINEMA PREMIERE · Movie Posters</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0a0e17;
+      color: #f0f0f0;
+      font-family: 'Poppins', sans-serif;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: rgba(10,14,23,0.95);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,215,0,0.3);
+      flex-wrap: wrap;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo i { font-size: 2rem; color: #ffd700; }
+    .logo h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffd700, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+      padding: 8px 0;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: #ffd700;
+      border-bottom: 2px solid #ffd700;
+    }
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1e2a3a;
+      padding: 8px 20px;
+      border-radius: 40px;
+      cursor: default;
+    }
+    .user-area i { color: #ffd700; font-size: 1.2rem; }
+    .user-area span { color: #eee; }
+    .hero {
+      background: linear-gradient(135deg, #0a0e17 0%, #141b2b 100%);
+      padding: 2rem 5%;
+      text-align: center;
+      border-bottom: 1px solid #2a3442;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #ffd700, #ffaa33);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p { color: #b9c3db; margin-top: 0.5rem; }
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 1.2rem 5%;
+      background: #0f1622;
+      border-bottom: 1px solid #2a3442;
+      position: sticky;
+      top: 70px;
+      z-index: 99;
+    }
+    .filter-chip {
+      background: #1e2a3a;
+      padding: 8px 22px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #ccc;
+      border: 1px solid transparent;
+    }
+    .filter-chip:hover, .filter-chip.active {
+      background: #ffd700;
+      color: #0a0e17;
+      transform: translateY(-2px);
+      border-color: #ffd700;
+    }
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 2rem 5%;
+    }
+    .movie-card {
+      background: #111927;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid #2a3442;
+      cursor: default;
+    }
+    .movie-card:hover {
+      transform: translateY(-10px);
+      border-color: #ffd700;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+    }
+    .poster-wrapper {
+      position: relative;
+      overflow: hidden;
+      height: 360px;
+      background: #0b111e;
+    }
+    .movie-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      display: block;
+    }
+    .movie-card:hover .movie-img { transform: scale(1.03); }
+    .rating-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      padding: 5px 12px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ffd700;
+      z-index: 2;
+    }
+    .year-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.7);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+    .movie-info {
+      padding: 1rem;
+    }
+    .movie-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .movie-meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      font-size: 0.8rem;
+    }
+    .genre-tag {
+      background: #ffd70020;
+      padding: 3px 10px;
+      border-radius: 20px;
+      color: #ffd700;
+    }
+    .director { color: #aaa; font-size: 0.7rem; }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .btn-trailer, .btn-book {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-trailer {
+      background: #2c3e66;
+      color: white;
+    }
+    .btn-trailer:hover { background: #1e4979; transform: scale(1.02); }
+    .btn-book {
+      background: #ffd700;
+      color: #0a0e17;
+      font-weight: 700;
+    }
+    .btn-book:hover { background: #ffed4e; transform: scale(1.02); }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #ffd700;
+      color: #0a0e17;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: bold;
+      z-index: 3000;
+      animation: slideIn 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    footer {
+      background: #050a12;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-top: 1px solid #2a3442;
+      color: #8f9bb3;
+    }
+    .input-poster-section {
+      background: #111927;
+      border-radius: 20px;
+      padding: 1.5rem 2rem;
+      margin: 0 5% 1.5rem 5%;
+      border: 1px solid #2a3442;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .input-poster-section label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffd700;
+      font-weight: 600;
+    }
+    .input-poster-section input {
+      background: #1e2a3a;
+      border: 1px solid #2a3442;
+      border-radius: 40px;
+      padding: 10px 20px;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      min-width: 300px;
+      flex: 1;
+    }
+    .input-poster-section input::placeholder { color: #6a7a8a; }
+    .input-poster-section button {
+      background: #ffd700;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: #0a0e17;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .input-poster-section button:hover { background: #ffed4e; transform: scale(1.02); }
+    .img-preview {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #0f1622;
+      padding: 6px 18px 6px 6px;
+      border-radius: 60px;
+      border: 1px solid #2a3442;
+    }
+    .img-preview img {
+      width: 42px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #000;
+    }
+    .img-preview span { font-size: 0.8rem; color: #aaa; }
+    @media (max-width: 768px) {
+      .navbar { flex-direction: column; gap: 10px; }
+      .nav-links { gap: 1rem; justify-content: center; }
+      .filters { top: 120px; }
+      .poster-wrapper { height: 280px; }
+      .input-poster-section input { min-width: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">
+    <i class="fas fa-film"></i>
+    <h2>CINEMA PREMIERE</h2>
+  </div>
+  <div class="nav-links">
+    <a href="Home.html">Home</a>
+    <a href="Movie.html" class="active">Movies</a>
+    <a href="Trending.html">Trending</a>
+    <a href="Profile.html">Profile</a>
+    <a href="Setting.html">Settings</a>
+  </div>
+  <div class="user-area">
+    <i class="fas fa-user-circle"></i>
+    <span>MovieFan</span>
+    <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1><i class="fas fa-ticket-alt"></i> 50+ Blockbuster Movies</h1>
+  <p>Paste any image URL below to update a movie poster. Click "Book Now" to simulate.</p>
+</section>
+
+<!-- Poster Input Tool -->
+<div class="input-poster-section">
+  <label><i class="fas fa-image"></i> Poster URL</label>
+  <input type="text" id="posterUrlInput" placeholder="https://image.tmdb.org/t/p/w500/... or any direct image link" value="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg">
+  <button id="applyPosterBtn"><i class="fas fa-pen"></i> Update Poster</button>
+  <div class="img-preview">
+    <img id="previewImg" src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" alt="preview">
+    <span>preview</span>
+  </div>
+</div>
+
+<div class="filters" id="filterSection">
+  <div class="filter-chip active" data-genre="all">All Movies</div>
+  <div class="filter-chip" data-genre="Action">Action</div>
+  <div class="filter-chip" data-genre="Sci-Fi">Sci-Fi</div>
+  <div class="filter-chip" data-genre="Drama">Drama</div>
+  <div class="filter-chip" data-genre="Thriller">Thriller</div>
+  <div class="filter-chip" data-genre="Comedy">Comedy</div>
+  <div class="filter-chip" data-genre="Horror">Horror</div>
+  <div class="filter-chip" data-genre="Animation">Animation</div>
+</div>
+
+<div class="movie-grid" id="movieGrid"></div>
+
+<footer>
+  <p>© 2025 CINEMA PREMIERE — 50+ Movies | Premium Experience</p>
+  <p style="font-size: 0.8rem; margin-top: 8px;"><i class="fas fa-edit"></i> Click any poster URL field & paste your own link</p>
+</footer>
+
+<script>
+  (function() {
+    // ----- MOVIE DATABASE (static, no Java, all image links editable) -----
+    const movieDatabase = [
+      {
+        id: 1,
+        title: "The Dark Knight",
+        year: 2008,
+        genre: "Action",
+        rating: 9.0,
+        director: "Christopher Nolan",
+        poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+        trailer: "https://www.youtube.com/embed/EXeTwQWrcwY"
+      },
+      {
+        id: 2,
+        title: "Inception",
+        year: 2010,
+        genre: "Sci-Fi",
+        rating: 8.8,
+        director: "Christopher Nolan",
+        poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+        trailer: "https://www.youtube.com/embed/YoHD9XEInc0"
+      },
+      {
+        id: 3,
+        title: "Interstellar",
+        year: 2014,
+        genre: "Sci-Fi",
+        rating: 8.7,
+        director: "Christopher Nolan",
+        poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        trailer: "https://www.youtube.com/embed/zSWdZVtXT7E"
+      },
+      {
+        id: 4,
+        title: "Oppenheimer",
+        year: 2023,
+        genre: "Drama",
+        rating: 8.9,
+        director: "Christopher Nolan",
+        poster: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+        trailer: "https://www.youtube.com/embed/uYPbbksJxIg"
+      },
+      {
+        id: 5,
+        title: "John Wick: Chapter 4",
+        year: 2023,
+        genre: "Action",
+        rating: 8.2,
+        director: "Chad Stahelski",
+        poster: "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",
+        trailer: "https://www.youtube.com/embed/qEVUtrk8_B4"
+      },
+      {
+        id: 6,
+        title: "The Batman",
+        year: 2022,
+        genre: "Thriller",
+        rating: 8.3,
+        director: "Matt Reeves",
+        poster: "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+        trailer: "https://www.youtube.com/embed/mqqft2x_Aa4"
+      },
+      {
+        id: 7,
+        title: "Dune: Part Two",
+        year: 2024,
+        genre: "Sci-Fi",
+        rating: 8.6,
+        director: "Denis Villeneuve",
+        poster: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+        trailer: "https://www.youtube.com/embed/U2Qp5pL3ovA"
+      },
+      {
+        id: 8,
+        title: "Spider-Man: Across the Spider-Verse",
+        year: 2023,
+        genre: "Animation",
+        rating: 8.9,
+        director: "Joaquim Dos Santos",
+        poster: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj3mJ6l.jpg",
+        trailer: "https://www.youtube.com/embed/shW9i6k8cB0"
+      }
+    ];
+
+    // ----- state -----
+    let currentGenre = 'all';
+    let movies = JSON.parse(JSON.stringify(movieDatabase)); // copy
+
+    // DOM refs
+    const grid = document.getElementById('movieGrid');
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const posterInput = document.getElementById('posterUrlInput');
+    const applyBtn = document.getElementById('applyPosterBtn');
+    const previewImg = document.getElementById('previewImg');
+
+    // update preview on input change
+    posterInput.addEventListener('input', function() {
+      const url = this.value.trim();
+      if (url) previewImg.src = url;
+    });
+
+    // Apply poster to first movie (quick demo) or we can target a specific movie.
+    // For simplicity: we apply to the first movie in the grid (index 0)
+    // But to make it interactive, we'll apply to the first movie in the list.
+    applyBtn.addEventListener('click', function() {
+      const newUrl = posterInput.value.trim();
+      if (!newUrl) {
+        showToast('Please paste a valid image URL', true);
+        return;
+      }
+      // update first movie poster (index 0)
+      if (movies.length > 0) {
+        movies[0].poster = newUrl;
+        renderMovies();
+        showToast('Poster updated for "' + movies[0].title + '"', false);
+        // update preview
+        previewImg.src = newUrl;
+      } else {
+        showToast('No movies available', true);
+      }
+    });
+
+    // Also click on any movie poster to update it: we can assign via data attribute, but we'll keep it simple:
+    // We'll let the user paste a URL and click "Update Poster" -> updates first movie.
+    // Additionally, we add a double-click on poster to set it as the input value (for convenience)
+    // We'll implement that in render.
+
+    // ----- render function -----
+    function renderMovies() {
+      const filtered = currentGenre === 'all' 
+        ? movies 
+        : movies.filter(m => m.genre === currentGenre);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1; text-align:center; padding:3rem;"><i class="fas fa-film-slash" style="font-size:3rem; color:#ffd700;"></i><p>No movies in this genre</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((movie, index) => {
+        // generate a unique id for poster click
+        return `
+          <div class="movie-card" data-movie-id="${movie.id}">
+            <div class="poster-wrapper">
+              <img class="movie-img" src="${movie.poster}" alt="${movie.title}" 
+                   onerror="this.src='https://placehold.co/400x600/1e2a3a/ffd700?text=${encodeURIComponent(movie.title)}'"
+                   data-id="${movie.id}">
+              <div class="rating-badge"><i class="fas fa-star"></i> ${movie.rating}/10</div>
+              <div class="year-badge"><i class="fas fa-calendar"></i> ${movie.year}</div>
+            </div>
+            <div class="movie-info">
+              <div class="movie-title">${movie.title}</div>
+              <div class="movie-meta">
+                <span class="genre-tag">${movie.genre}</span>
+                <span class="director">${movie.director || 'Various'}</span>
+              </div>
+              <div class="btn-group">
+                <button class="btn-trailer" onclick="window.open('${movie.trailer || '#'}','_blank')"><i class="fas fa-play"></i> Trailer</button>
+                <button class="btn-book" onclick="bookMovie('${movie.title}')"><i class="fas fa-ticket-alt"></i> Book Now</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Attach click listener to each poster image to fill input with its URL
+      document.querySelectorAll('.movie-img').forEach(img => {
+        img.addEventListener('dblclick', function(e) {
+          const url = this.src;
+          posterInput.value = url;
+          previewImg.src = url;
+          showToast('Poster URL copied to input field', false);
+        });
+        // Also single click to show info (optional)
+        img.addEventListener('click', function() {
+          // just a visual feedback
+        });
+      });
+    }
+
+    // ----- filter logic -----
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', function() {
+        filterChips.forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        currentGenre = this.getAttribute('data-genre');
+        renderMovies();
+      });
+    });
+
+    // ----- book simulation -----
+    window.bookMovie = function(title) {
+      showToast(`🎟️ "${title}" - Seat selection (demo)`, false);
+    };
+
+    // ----- toast -----
+    function showToast(message, isError = false) {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
+      toast.style.background = isError ? '#e74c3c' : '#ffd700';
+      toast.style.color = isError ? 'white' : '#0a0e17';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Expose showToast for inline use
+    window.showToast = showToast;
+
+    // initial render
+    renderMovies();
+
+    // set preview from default input
+    previewImg.src = posterInput.value;
+
+    // optional: if user clicks "Update Poster" with a specific movie id (we can extend)
+    // We also add a small hint: double-click any poster to load its URL into the input field.
+
+    console.log('🎬 CINEMA PREMIERE loaded — double-click any poster to copy its URL, then paste a new one and click "Update Poster"');
+  })();
+</script>
+
+</body>
+</html>

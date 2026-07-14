@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CNIMA | Join the Silver Screen — Register</title>
+
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #0b0e1a, #03050b);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* cinematic animated grain & light leaks */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjciIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDYiLz48L3N2Zz4=');
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* main card container */
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(2px);
+        }
+
+        /* premium neon border card */
+        .cinema-card {
+            background: rgba(12, 18, 28, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 0, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+        }
+
+        .cinema-card:hover {
+            box-shadow: 0 30px 55px -12px black, 0 0 0 1px rgba(255, 215, 0, 0.45);
+            transform: translateY(-2px);
+        }
+
+        /* brand header */
+        .brand {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .brand h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #FFE55C, #FFB347);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .brand p {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #b9c7d9;
+            text-transform: uppercase;
+            margin-top: -6px;
+            font-weight: 300;
+        }
+
+        /* tagline separator */
+        .gold-separator {
+            width: 70px;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd966, #ffb347);
+            margin: 12px auto 20px auto;
+            border-radius: 4px;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.7rem;
+            color: #f5f9ff;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #a0afc5;
+            margin-bottom: 1.8rem;
+        }
+
+        /* form group modern */
+        .input-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffd966;
+            font-size: 1.1rem;
+            z-index: 2;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1.5px solid rgba(255, 215, 0, 0.25);
+            border-radius: 60px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: white;
+            transition: all 0.2s ease;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            backdrop-filter: blur(4px);
+        }
+
+        input:focus {
+            border-color: #ffd966;
+            background: rgba(20, 28, 40, 0.9);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+
+        input::placeholder {
+            color: rgba(200, 210, 230, 0.6);
+            font-weight: 400;
+        }
+
+        /* password hint row + strength */
+        .password-hint {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+            font-size: 0.7rem;
+            color: #9aaec9;
+            padding-left: 10px;
+        }
+
+        .strength-meter {
+            height: 4px;
+            background: #2a3448;
+            border-radius: 4px;
+            margin-top: 8px;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .strength-fill {
+            width: 0%;
+            height: 4px;
+            border-radius: 4px;
+            background: #e53e3e;
+            transition: width 0.2s ease;
+        }
+
+        /* register button premium */
+        .btn-register {
+            width: 100%;
+            background: linear-gradient(95deg, #e50914, #b00610);
+            border: none;
+            padding: 14px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 1rem;
+            box-shadow: 0 8px 20px rgba(229, 9, 20, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-register:hover {
+            transform: scale(1.01);
+            background: linear-gradient(95deg, #ff1a26, #c50812);
+            box-shadow: 0 12px 28px rgba(229, 9, 20, 0.5);
+        }
+
+        .btn-register:active {
+            transform: scale(0.98);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.8rem;
+            font-size: 0.9rem;
+            color: #b9c7de;
+        }
+        .login-link a {
+            color: #ffd966;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            border-bottom: 1px dotted rgba(255, 215, 0, 0.4);
+        }
+        .login-link a:hover {
+            color: #ffea8a;
+            border-bottom-color: #ffd966;
+        }
+
+        /* error & success micro-interactions */
+        .field-error {
+            border-color: #ff4d4d !important;
+            background: rgba(255, 60, 60, 0.08) !important;
+        }
+
+        .error-msg {
+            color: #ffb3b3;
+            font-size: 0.7rem;
+            margin-top: 6px;
+            margin-left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* custom toast */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #1e2a3aee;
+            backdrop-filter: blur(12px);
+            color: #ffd966;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-left: 4px solid #ffd700;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            font-family: monospace;
+            letter-spacing: 0.3px;
+        }
+
+        .toast-show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* responsive */
+        @media (max-width: 480px) {
+            .cinema-card {
+                padding: 1.6rem;
+            }
+            .brand h1 {
+                font-size: 2.4rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <div class="cinema-card">
+        <div class="brand">
+            <h1>CNIMA</h1>
+            <p>cinema redefined</p>
+        </div>
+        <div class="gold-separator"></div>
+        <h2>Join the experience</h2>
+        <div class="subtitle">Unlock premium screenings & exclusive rewards</div>
+
+        <form id="registerForm" action="#" method="post">
+            <!-- Full name -->
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="fullName" placeholder="Full name" autocomplete="name">
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email address" autocomplete="email">
+            </div>
+
+            <!-- Phone with minimal validation -->
+            <div class="input-group">
+                <i class="fas fa-phone-alt"></i>
+                <input type="tel" id="phone" placeholder="Phone number" autocomplete="tel">
+            </div>
+
+            <!-- Password group + strength -->
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Create password" autocomplete="new-password">
+                <div class="strength-meter">
+                    <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                <div class="password-hint" id="passwordHint">8+ chars, strong recommended</div>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="input-group">
+                <i class="fas fa-check-circle"></i>
+                <input type="password" id="confirmPassword" placeholder="Confirm password" autocomplete="off">
+            </div>
+
+            <!-- dynamic inline error container -->
+            <div id="inlineErrors" style="margin-bottom: 10px;"></div>
+
+            <button type="submit" class="btn-register">
+                <i class="fas fa-ticket-alt"></i> Register now
+                <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <div class="login-link">
+                Already part of CNIMA? <a href="login.html">Sign in</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-message"></div>
+
+<script>
+    (function() {
+        // DOM elements
+        const fullName = document.getElementById('fullName');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        const password = document.getElementById('password');
+        const confirmPw = document.getElementById('confirmPassword');
+        const form = document.getElementById('registerForm');
+        const strengthFill = document.getElementById('strengthFill');
+        const passwordHint = document.getElementById('passwordHint');
+        const inlineErrorsDiv = document.getElementById('inlineErrors');
+
+        // Toast helper
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toastMsg');
+            toast.textContent = message;
+            toast.style.color = isError ? '#ffb3b3' : '#ffea8a';
+            toast.style.borderLeftColor = isError ? '#ff4d4d' : '#ffd966';
+            toast.classList.add('toast-show');
+            setTimeout(() => {
+                toast.classList.remove('toast-show');
+            }, 2800);
+        }
+
+        // clear inline field errors UI
+        function clearFieldErrors() {
+            const inputs = [fullName, email, phone, password, confirmPw];
+            inputs.forEach(inp => {
+                inp.classList.remove('field-error');
+            });
+            inlineErrorsDiv.innerHTML = '';
+        }
+
+        // show specific field error and optional message under
+        function highlightFieldError(field, message) {
+            if(field) field.classList.add('field-error');
+            if(message) {
+                const errorSpan = document.createElement('div');
+                errorSpan.className = 'error-msg';
+                errorSpan.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                inlineErrorsDiv.appendChild(errorSpan);
+            }
+        }
+
+        // realtime password strength meter + hint update
+        function evaluateStrength(pw) {
+            if(!pw) {
+                strengthFill.style.width = '0%';
+                strengthFill.style.backgroundColor = '#e53e3e';
+                passwordHint.textContent = '8+ chars, strong recommended';
+                passwordHint.style.color = '#9aaec9';
+                return 0;
+            }
+            let score = 0;
+            if(pw.length >= 8) score++;
+            if(pw.length >= 12) score++;
+            if(/[A-Z]/.test(pw)) score++;
+            if(/[0-9]/.test(pw)) score++;
+            if(/[^A-Za-z0-9]/.test(pw)) score++;
+            
+            let percent = 0;
+            let color = '#e53e3e';
+            let strengthText = 'Weak — use mix of letters & numbers';
+            if(score <= 2) {
+                percent = 25;
+                color = '#e53e3e';
+                strengthText = 'Weak — add uppercase, numbers or symbols';
+            } else if(score === 3) {
+                percent = 55;
+                color = '#f7b32b';
+                strengthText = 'Medium — nearly there, add symbol';
+            } else if(score >= 4) {
+                percent = 85;
+                color = '#2ecc71';
+                strengthText = 'Strong password 💪 great!';
+            }
+            if(pw.length >= 8 && score >= 4) percent = 100;
+            strengthFill.style.width = `${percent}%`;
+            strengthFill.style.backgroundColor = color;
+            passwordHint.textContent = strengthText;
+            passwordHint.style.color = color === '#e53e3e' ? '#ffaeae' : '#bfe6c8';
+            return score;
+        }
+
+        password.addEventListener('input', function() {
+            evaluateStrength(password.value);
+            if(confirmPw.value) validateConfirmMatch();
+        });
+
+        confirmPw.addEventListener('input', validateConfirmMatch);
+        
+        function validateConfirmMatch() {
+            if(confirmPw.value && password.value !== confirmPw.value) {
+                confirmPw.classList.add('field-error');
+            } else {
+                confirmPw.classList.remove('field-error');
+            }
+        }
+
+        // Full validation on submit
+        function validateRegistration() {
+            clearFieldErrors();
+            let isValid = true;
+            const errors = [];
+
+            // 1. Name validation: min 2 chars, only letters, spaces, dots, apostrophes friendly
+            const nameVal = fullName.value.trim();
+            if(nameVal.length < 2) {
+                highlightFieldError(fullName, 'Full name must be at least 2 characters');
+                isValid = false;
+            } else if(!/^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s\.\'-]{2,60}$/.test(nameVal)) {
+                highlightFieldError(fullName, 'Use valid name (letters, spaces, hyphens)');
+                isValid = false;
+            } else {
+                fullName.classList.remove('field-error');
+            }
+
+            // 2. Email: strict RFC-like
+            const emailVal = email.value.trim();
+            const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]{2,}$/;
+            if(!emailVal) {
+                highlightFieldError(email, 'Email address is required');
+                isValid = false;
+            } else if(!emailPattern.test(emailVal)) {
+                highlightFieldError(email, 'Enter a valid email (example@domain.com)');
+                isValid = false;
+            } else {
+                email.classList.remove('field-error');
+            }
+            
+            // 3. Phone: international flexible but at least 8 digits, allow + and spaces/dash
+            const phoneVal = phone.value.trim();
+            const phoneCleaned = phoneVal.replace(/[\s\-\(\)\+]/g, '');
+            if(!phoneVal) {
+                highlightFieldError(phone, 'Phone number is required for booking updates');
+                isValid = false;
+            } else if(phoneCleaned.length < 8 || phoneCleaned.length > 15 || !/^[0-9]+$/.test(phoneCleaned)) {
+                highlightFieldError(phone, 'Phone must contain 8-15 digits (numbers only, + allowed)');
+                isValid = false;
+            } else {
+                phone.classList.remove('field-error');
+            }
+            
+            // 4. Password strength validation
+            const pwVal = password.value;
+            if(!pwVal) {
+                highlightFieldError(password, 'Create a secure password');
+                isValid = false;
+            } else if(pwVal.length < 8) {
+                highlightFieldError(password, 'Password must be at least 8 characters');
+                isValid = false;
+            } else {
+                const score = evaluateStrength(pwVal);
+                if(score < 3) {
+                    highlightFieldError(password, 'Password too weak. Use uppercase, number or special char');
+                    isValid = false;
+                } else {
+                    password.classList.remove('field-error');
+                }
+            }
+            
+            // 5. Confirm password match
+            const confirmVal = confirmPw.value;
+            if(pwVal !== confirmVal) {
+                highlightFieldError(confirmPw, 'Passwords do not match');
+                isValid = false;
+            } else if(pwVal && confirmVal) {
+                confirmPw.classList.remove('field-error');
+            }
+            
+            if(!isValid) {
+                showToast('Please fix the errors above', true);
+                return false;
+            }
+            return true;
+        }
+
+        // check user existence mock? but we just redirect to login.html after success
+        // simulate registration success and store a welcome flag (optional)
+        function registerUserSuccess() {
+            // Store minimal user greeting data (e.g. show first name on login page)
+            const firstName = fullName.value.trim().split(' ')[0];
+            localStorage.setItem('cnima_just_registered', 'true');
+            localStorage.setItem('cnima_reg_name', firstName);
+            // optional: you can simulate email/phone in session storage for demo
+            sessionStorage.setItem('reg_email', email.value.trim());
+            showToast(`✨ Welcome ${firstName}! Registration complete. Redirecting to login...`, false);
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1800);
+        }
+
+        // submit handler
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(validateRegistration()) {
+                // All validations passed, register user (purely frontend demo)
+                registerUserSuccess();
+            } else {
+                // scroll to first error smoothly
+                const firstErrorField = document.querySelector('.field-error');
+                if(firstErrorField) {
+                    firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+
+        // extra live remove error on typing (clean UX)
+        const allInputs = [fullName, email, phone, password, confirmPw];
+        allInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('field-error');
+                if(this === confirmPw && password.value === confirmPw.value) {
+                    confirmPw.classList.remove('field-error');
+                }
+                if(inlineErrorsDiv && this === fullName || this === email || this === phone) {
+                    // clear only generic errors on typing, but keep custom? better clear inline whole? 
+                    const oldErrors = inlineErrorsDiv.querySelectorAll('.error-msg');
+                    oldErrors.forEach(err => {
+                        if(err.innerText.includes('Full name') || err.innerText.includes('Email') || err.innerText.includes('Phone')) {
+                            err.remove();
+                        }
+                    });
+                }
+                if(this === password) evaluateStrength(password.value);
+            });
+        });
+        
+        // initial strength check
+        evaluateStrength('');
+    })();
+</script>
+</body>
+</html>

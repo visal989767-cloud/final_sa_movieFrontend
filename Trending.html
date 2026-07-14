@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CNIMA | 25 Trending Movies</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0a0e17;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* NAVBAR - Same as home.html */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: rgba(10, 14, 23, 0.95);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo i {
+    font-size: 2rem;
+    color: #ffd700;
+}
+
+.logo h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    padding: 8px 0;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #ffd700;
+    border-bottom: 2px solid #ffd700;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1e2a3a;
+    padding: 8px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.user-area:hover {
+    background: #2a3a4a;
+}
+
+.user-area i {
+    color: #ffd700;
+    font-size: 1.2rem;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #0a0e17 0%, #141b2b 100%);
+    padding: 2rem 5%;
+    text-align: center;
+    border-bottom: 1px solid #2a3442;
+}
+
+.hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #ffd700, #ffaa33);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: #b9c3db;
+    margin-top: 0.5rem;
+}
+
+/* Main Content */
+.main-container {
+    padding: 2rem 5%;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.movie-card {
+    background: #111927;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: 0.3s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    border: 1px solid #2a3442;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    border-color: #ffd700;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.4);
+}
+
+.movie-img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 15px;
+}
+
+.movie-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.movie-genre {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.movie-rating {
+    color: #ffd700;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-trailer, .btn-book {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-trailer {
+    background: #2c3e66;
+    color: white;
+}
+
+.btn-trailer:hover {
+    background: #1e4979;
+    transform: scale(1.02);
+}
+
+.btn-book {
+    background: #ffd700;
+    color: #0a0e17;
+    font-weight: 700;
+}
+
+.btn-book:hover {
+    background: #ffed4e;
+    transform: scale(1.02);
+}
+
+/* FULLSCREEN POPUP */
+#popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(15px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#video {
+    width: 90%;
+    height: 80%;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(255,215,0,0.3);
+}
+
+.close-popup {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: #ffd700;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 2rem;
+}
+
+footer {
+    background: #050a12;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid #2a3442;
+    color: #8f9bb3;
+}
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #ffd700;
+    color: #0a0e17;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-weight: bold;
+    z-index: 3000;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 10px; }
+    .nav-links { gap: 1rem; justify-content: center; }
+    .movie-grid { gap: 15px; }
+    .btn-group { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR - Same as home.html -->
+<nav class="navbar">
+    <div class="logo">
+        <i class="fas fa-film"></i>
+        <h2>CINEMA PREMIERE</h2>
+    </div>
+    <div class="nav-links">
+        <a href="/home">Home</a>
+        <a href="/movie">Movies</a>
+        <a href="/trending" class="active">Trending</a>
+        <a href="/profile">Profile</a>
+        <a href="/setting">Settings</a>
+    </div>
+    <div class="user-area" id="userArea">
+        <i class="fas fa-user-circle"></i>
+        <span id="username">Visal</span>
+        <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1><i class="fas fa-fire"></i> 25 Trending Movies</h1>
+    <p>Discover the most popular and talked-about movies right now. Book your tickets today!</p>
+</section>
+
+<!-- Main Content -->
+<div class="main-container">
+    <div class="movie-grid" id="movieGrid"></div>
+</div>
+
+<footer>
+    <p>© 2025 CINEMA PREMIERE — 50+ Movies | Premium Experience | Book with Confidence</p>
+    <p style="font-size: 0.8rem; margin-top: 8px;"><i class="fas fa-ticket-alt"></i> Trending Now | Most Popular Selections</p>
+</footer>
+
+<!-- FULLSCREEN PLAYER -->
+<div id="popup">
+    <button class="close-popup" onclick="closePopup()">&times;</button>
+    <iframe id="video" allow="autoplay; fullscreen"></iframe>
+</div>
+
+<script>
+
+function showToast(message, isError = false) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
+    toast.style.background = isError ? '#e74c3c' : '#ffd700';
+    toast.style.color = isError ? 'white' : '#0a0e17';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+/* 🎬 25 MOVIES */
+const movies = [
+    {t:"Interstellar",g:"Sci-Fi",r:8.6,i:"https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",v:"https://youtu.be/zSWdZVtXT7E"},
+    {t:"Inception",g:"Sci-Fi",r:8.8,i:"https://image.tmdb.org/t/p/original/edv5CZvWj09upOsy2Y6IwDhK8bt.jpg",v:"https://youtu.be/YoHD9XEInc0"},
+    {t:"The Dark Knight",g:"Action",r:9.0,i:"https://image.tmdb.org/t/p/original/qJ2tW6WMUDux911r6m7haRef0WH.jpg",v:"https://youtu.be/EXeTwQWrcwY"},
+    {t:"Avengers Endgame",g:"Action",r:8.4,i:"https://image.tmdb.org/t/p/original/or06FN3Dka5tukK1e9sl16pB3iy.jpg",v:"https://youtu.be/TcMBFSGVi1c"},
+    {t:"Avatar",g:"Sci-Fi",r:7.8,i:"https://image.tmdb.org/t/p/original/6EiRUJpuoeQPghrs3YNktfnqOVh.jpg",v:"https://youtu.be/5PSNL1qE6VY"},
+    {t:"Joker",g:"Drama",r:8.5,i:"https://image.tmdb.org/t/p/original/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",v:"https://youtu.be/zAGVQLHvwOY"},
+    {t:"Fast 7",g:"Action",r:7.2,i:"https://image.tmdb.org/t/p/original/wurKlC3VKUgcfsn0K51MJYEleS2.jpg",v:"https://youtu.be/Skpu5HaVkOc"},
+    {t:"Spider-Man NWH",g:"Action",r:8.3,i:"https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",v:"https://youtu.be/JfVOs4VSpmA"},
+    {t:"Doctor Strange 2",g:"Fantasy",r:7.4,i:"https://image.tmdb.org/t/p/original/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg",v:"https://youtu.be/aWzlQ2N6qqg"},
+    {t:"Black Panther",g:"Action",r:7.3,i:"https://image.tmdb.org/t/p/original/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",v:"https://youtu.be/xjDjIWPwcPU"},
+    {t:"Titanic",g:"Romance",r:7.9,i:"https://image.tmdb.org/t/p/original/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",v:"https://youtu.be/kVrqfYjkTdQ"},
+    {t:"The Matrix",g:"Sci-Fi",r:8.7,i:"https://image.tmdb.org/t/p/original/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",v:"https://youtu.be/vKQi3bBA1y8"},
+    {t:"Avatar 2",g:"Sci-Fi",r:7.6,i:"https://image.tmdb.org/t/p/original/2EewmxXe72ogD0EaWM8gqa0ccIw.jpg",v:"https://youtu.be/d9MyW72ELq0"},
+    {t:"Top Gun Maverick",g:"Action",r:8.3,i:"https://image.tmdb.org/t/p/original/62HCnUTziyWcpDaBO2i1DX17ljH.jpg",v:"https://youtu.be/giXco2jaZ_4"},
+    {t:"Deadpool",g:"Action",r:8.0,i:"https://image.tmdb.org/t/p/original/yGSxMiF0cYuAiyuve5DA6bnWEOI.jpg",v:"https://youtu.be/ONHBaC-pfsk"},
+    {t:"Logan",g:"Action",r:8.1,i:"https://image.tmdb.org/t/p/original/fnbjcRDYn6YviCcePDnGdyAkYsB.jpg",v:"https://youtu.be/Div0iP65aZo"},
+    {t:"Iron Man",g:"Action",r:7.9,i:"https://image.tmdb.org/t/p/original/78lPtwv72eTNqFW9COBYI0dWDJa.jpg",v:"https://youtu.be/8ugaeA-nMTc"},
+    {t:"Thor Ragnarok",g:"Action",r:7.9,i:"https://image.tmdb.org/t/p/original/rzRwTcFvttcN1ZpX2xv4j3tSDpL.jpg",v:"https://youtu.be/ue80QwXMRHg"},
+    {t:"Guardians Galaxy",g:"Action",r:8.0,i:"https://image.tmdb.org/t/p/original/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg",v:"https://youtu.be/d96cjJhvlMA"},
+    {t:"Frozen",g:"Animation",r:7.4,i:"https://image.tmdb.org/t/p/original/jIjdFXKUNtdf1bwqMrhearpyjMj.jpg",v:"https://youtu.be/TbQm5doF_Uc"},
+    {t:"Toy Story 4",g:"Animation",r:7.8,i:"https://image.tmdb.org/t/p/original/w9kR8qbmQ01HwnvK4alvnQ2ca0L.jpg",v:"https://youtu.be/wmiIUN-7qhE"},
+    {t:"Minions",g:"Comedy",r:6.4,i:"https://image.tmdb.org/t/p/original/q0R4crx2SehcEEQEkYObktdeFy.jpg",v:"https://youtu.be/eisKxhjBnZ0"},
+    {t:"Kung Fu Panda",g:"Animation",r:7.6,i:"https://image.tmdb.org/t/p/original/wWt4JYXTg5Wr3xBW2phBrMKgp3x.jpg",v:"https://youtu.be/PXi3Mv6KMzY"},
+    {t:"Shrek",g:"Comedy",r:7.9,i:"https://image.tmdb.org/t/p/original/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg",v:"https://youtu.be/CwXOrWvPBPk"},
+    {t:"The Lion King",g:"Animation",r:8.5,i:"https://image.tmdb.org/t/p/original/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",v:"https://youtu.be/4sj1MT05lAA"}
+];
+
+const grid = document.getElementById("movieGrid");
+
+/* convert youtube */
+function embed(url){
+    let id = "";
+    if(url.includes("youtu.be/")) id = url.split("youtu.be/")[1].split("?")[0];
+    else id = url.split("v=")[1].split("&")[0];
+    return "https://www.youtube.com/embed/" + id;
+}
+
+/* Book movie function */
+function bookMovie(movieTitle) {
+    showToast(`🎟 Booking "${movieTitle}" - Redirecting to booking page...`);
+    setTimeout(() => {
+        localStorage.setItem('selectedMovie', movieTitle);
+        window.location.href = '/movie';
+    }, 1000);
+}
+
+/* render */
+grid.innerHTML = movies.map(m => `
+<div class="movie-card">
+    <img src="${m.i}" class="movie-img" onerror="this.src='https://placehold.co/300x400/1e2a3a/ffd700?text=${m.t}'">
+    <div class="movie-info">
+        <div class="movie-title">${m.t}</div>
+        <div class="movie-genre">${m.g}</div>
+        <div class="movie-rating"><i class="fas fa-star"></i> ${m.r}/10</div>
+        <div class="btn-group">
+            <button class="btn-trailer" onclick="play('${m.v}')"><i class="fas fa-play"></i> Trailer</button>
+            <button class="btn-book" onclick="bookMovie('${m.t.replace(/'/g, "\\'")}')"><i class="fas fa-ticket-alt"></i> Book</button>
+        </div>
+    </div>
+</div>
+`).join('');
+
+/* fullscreen */
+function play(url){
+    document.getElementById("video").src = embed(url) + "?autoplay=1";
+    document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("video").src = "";
+}
+
+document.getElementById("popup").onclick = function(e){
+    if(e.target === this){
+        closePopup();
+    }
+};
+
+// User area click
+document.getElementById('userArea')?.addEventListener('click', () => {
+    window.location.href = '/profile';
+});
+
+// Load user from localStorage
+const savedUser = localStorage.getItem('currentUser');
+if(savedUser) {
+    try {
+        const user = JSON.parse(savedUser);
+        document.getElementById('username').innerText = user.username || user.email?.split('@')[0] || 'User';
+    } catch(e) {}
+}
+</script>
+</body>
+</html>
